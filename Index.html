@@ -430,8 +430,9 @@
         /* Footer */
         footer {
             text-align: center;
-            padding: 60px 0;
+            padding: 80px 0;
             background: #000;
+            border-top: 1px solid #111;
         }
 
         .author-name {
@@ -440,6 +441,27 @@
             font-size: 1.2rem;
             margin-bottom: 15px;
             letter-spacing: 3px;
+        }
+
+        .social-links {
+            margin: 20px 0 30px;
+        }
+
+        .social-btn {
+            color: #555;
+            text-decoration: none;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            margin: 0 15px;
+            transition: 0.3s;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .social-btn:hover {
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+            transform: translateY(-2px);
         }
 
         /* Mobile Responsive */
@@ -484,8 +506,8 @@
             </div>
             <div class="hero-image">
                 <div class="image-wrapper">
-                    <!-- Updated Book Cover Image from Google Drive -->
-                    <img src="https://github.com/ShreyanshGupta205/Zero-Index-Book/blob/main/Zero%20Index.png?raw=true" alt="Zero Index Book Cover">
+                    <!-- Updated Book Cover Image from GitHub -->
+                    <img src="https://github.com/ShreyanshGupta205/Zero-Index-Book/blob/main/images/Zero%20Index.png?raw=true" alt="Zero Index Book Cover">
                 </div>
             </div>
         </div>
@@ -554,7 +576,14 @@
         <div class="container" id="about">
             <div class="author-name">SHREYANSH GUPTA</div>
             <p style="font-size: 0.9rem; color: #666;">Architect of the Zero Index. Explorer of the Digital Void.</p>
-            <p style="margin-top: 40px; font-size: 0.6rem; color: #222; letter-spacing: 2px;">
+            
+            <!-- Added LinkedIn and Instagram Uplinks -->
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/shreyanshgupta205/" target="_blank" class="social-btn">LinkedIn</a>
+                <a href="https://www.instagram.com/shreyanshg205/" target="_blank" class="social-btn">Instagram</a>
+            </div>
+
+            <p style="margin-top: 10px; font-size: 0.6rem; color: #222; letter-spacing: 2px;">
                 REBOOT_REQUIRED // ENCRYPTION_ACTIVE // &copy; 2025
             </p>
         </div>
