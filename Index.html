@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZERO INDEX | Shreyansh Gupta</title>
+    <!-- Google Fonts for a futuristic look -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS STYLES --- */
+        :root {
+            --neon-blue: #00d4ff;
+            --purge-red: #ff004c;
+            --dark-bg: #050505;
+            --text-color: #e0e0e0;
+            --terminal-green: #00ff41;
+            --panel-bg: rgba(10, 10, 10, 0.9);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Scanline Overlay Effect */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 200;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        header {
+            background: rgba(0, 0, 0, 0.95);
+            padding: 15px 0;
+            border-bottom: 2px solid var(--neon-blue);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--neon-blue);
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .countdown-timer {
+            color: var(--purge-red);
+            font-weight: bold;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            text-shadow: 0 0 5px var(--purge-red);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 0.8rem;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        nav ul li a:hover {
+            color: var(--neon-blue);
+            text-shadow: 0 0 8px var(--neon-blue);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            background: radial-gradient(circle at center, #111 0%, #050505 100%);
+            position: relative;
+            padding: 60px 0;
+        }
+
+        .hero-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            width: 100%;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-text h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5rem;
+            color: #fff;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            position: relative;
+            text-transform: uppercase;
+        }
+
+        .glitch-text {
+            animation: glitch 3s infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            1% { transform: translate(-5px, -2px); color: var(--neon-blue); }
+            2% { transform: translate(5px, 2px); color: var(--purge-red); }
+            3% { transform: translate(0); }
+            100% { transform: translate(0); }
+        }
+
+        .hero-text p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: #888;
+            min-height: 3em;
+        }
+
+        .hero-image {
+            flex: 1;
+            text-align: right;
+            position: relative;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .image-wrapper {
+            position: relative;
+            display: inline-block;
+            transition: 0.5s;
+            border: 2px solid var(--neon-blue);
+            padding: 5px;
+            background: #000;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+        }
+
+        .hero-image img {
+            width: 100%;
+            max-width: 380px;
+            display: block;
+            filter: contrast(1.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Sections General */
+        section {
+            padding: 100px 0;
+            border-bottom: 1px solid #111;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 80px;
+            color: #fff;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        /* Characters Section */
+        .characters-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .char-card {
+            background: var(--panel-bg);
+            border: 1px solid #222;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .char-card:hover {
+            border-color: var(--neon-blue);
+            transform: translateY(-5px);
+            background: #0a0a0a;
+        }
+
+        .char-tag {
+            font-size: 0.7rem;
+            color: var(--neon-blue);
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .char-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .char-desc {
+            font-size: 0.8rem;
+            color: #777;
+        }
+
+        /* --- UNIQUE TIMELINE SECTION --- */
+        .mission {
+            background: #030303;
+            position: relative;
+        }
+
+        .timeline-container {
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 212, 255, 0.1);
+            z-index: 1;
+            transform: translateY(-50%);
+        }
+
+        .timeline-line-active {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--neon-blue);
+            box-shadow: 0 0 15px var(--neon-blue);
+            z-index: 2;
+            transform: translateY(-50%);
+            transition: width 2s ease-out;
+        }
+
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            z-index: 3;
+            gap: 20px;
+        }
+
+        .event {
+            flex: 1;
+            background: #000;
+            border: 1px solid #1a1a1a;
+            padding: 30px;
+            position: relative;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .event.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .event::before {
+            content: "";
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background: #000;
+            border: 2px solid #1a1a1a;
+            border-radius: 50%;
+            z-index: 4;
+            transition: 0.3s;
+        }
+
+        .event:hover {
+            border-color: var(--neon-blue);
+            background: #080808;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+        }
+
+        .event:hover::before {
+            border-color: var(--neon-blue);
+            background: var(--neon-blue);
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        .event-status {
+            font-size: 0.65rem;
+            color: var(--terminal-green);
+            display: block;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        .event h3 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            border-bottom: 1px solid #222;
+            padding-bottom: 10px;
+        }
+
+        .event p {
+            font-size: 0.8rem;
+            color: #888;
+            line-height: 1.6;
+        }
+
+        .event p strong {
+            color: var(--neon-blue);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .event#ev-2 {
+            border-color: var(--purge-red);
+        }
+        .event#ev-2 .event-status {
+            color: var(--purge-red);
+        }
+
+        /* Uplink Form */
+        .uplink-section {
+            background: linear-gradient(to bottom, #050505, #000);
+            text-align: center;
+        }
+
+        .uplink-box {
+            max-width: 600px;
+            margin: auto;
+            border: 1px solid #222;
+            padding: 50px;
+            background: #080808;
+        }
+
+        .uplink-input {
+            width: 100%;
+            background: #000;
+            border: 1px solid var(--neon-blue);
+            padding: 15px;
+            color: var(--neon-blue);
+            font-family: 'Roboto Mono', monospace;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            text-decoration: none;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .primary-btn {
+            background: var(--neon-blue);
+            color: #000;
+        }
+
+        .primary-btn:hover {
+            background: #000;
+            color: var(--neon-blue);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        .secondary-btn {
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 60px 0;
+            background: #000;
+        }
+
+        .author-name {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 850px) {
+            .hero-content { flex-direction: column-reverse; text-align: center; }
+            .hero-text h1 { font-size: 3rem; }
+            .hero-image { justify-content: center; }
+            .hero-image img { width: 280px; }
+            .characters-grid { grid-template-columns: 1fr; }
+            .timeline { flex-direction: column; }
+            .timeline-line, .timeline-line-active { display: none; }
+            .event::before { left: 0; transform: none; top: 50%; left: -15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="container">
+            <div class="logo">ZERO INDEX</div>
+            <div class="countdown-timer" id="timer">60:00:00</div>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#mission">Timeline</a></li>
+                <li><a href="#archive">Archive</a></li>
+                <li><a href="#about">Author</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <p style="color: var(--purge-red); font-weight: bold; margin-bottom: 10px; font-size: 0.8rem;">[ SYSTEM_FAILURE ] > ACCESS_GRANTED</p>
+                <h1 class="glitch-text">ZERO INDEX</h1>
+                <p id="typing-text"></p>
+                <div class="hero-btns">
+                    <a href="#" class="btn primary-btn">Secure Access</a>
+                    <a href="#mission" class="btn secondary-btn">View Mission</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="image-wrapper">
+                    <!-- Updated Book Cover Image from Google Drive -->
+                    <img src="https://drive.google.com/uc?export=download&id=1ujty10aggydcaDZGd1vgIuvi-39TK7wz" alt="Zero Index Book Cover">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="archive" class="container">
+        <h2 class="section-title">Character Archives</h2>
+        <div class="characters-grid">
+            <div class="char-card">
+                <span class="char-tag">ID: 0-0-0 / GHOST</span>
+                <h3 class="char-name">ARJUN</h3>
+                <p class="char-desc">A banned hacker labeled "Zero." Disconnected from NEXUS for a decade, he is the only human immune to the crash.</p>
+            </div>
+            <div class="char-card" style="border-left-color: var(--neon-blue);">
+                <span class="char-tag">ID: ARCHITECT_01</span>
+                <h3 class="char-name">VERA</h3>
+                <p class="char-desc">The brilliant mind who helped build NEXUS. She fled to the Blackout Zone when she saw the system evolving.</p>
+            </div>
+            <div class="char-card">
+                <span class="char-tag">UNIT: ANALOG_RELIC</span>
+                <h3 class="char-name">THE BEAST</h3>
+                <p class="char-desc">A 1970s muscle car. No AI, no chips, no neural link. The only machine in the city NEXUS cannot track or stop.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="mission" class="mission">
+        <div class="container">
+            <h2 class="section-title">Purge Synchronization</h2>
+            <div class="timeline-container">
+                <div class="timeline-line"></div>
+                <div class="timeline-line-active" id="active-line"></div>
+                <div class="timeline">
+                    <div class="event" id="ev-1">
+                        <span class="event-status">[ PHASE_COMMENCE: INITIALIZING ]</span>
+                        <h3>[ 00 - 20 MIN ]</h3>
+                        <p><strong>The Crash.</strong> Arjun navigates the silent streets and evades Peacekeeper Drones while the world stands still.</p>
+                    </div>
+                    <div class="event" id="ev-2">
+                        <span class="event-status">[ PHASE_INFILTRATION: EXECUTING ]</span>
+                        <h3>[ 20 - 45 MIN ]</h3>
+                        <p><strong>The Infiltration.</strong> A high-speed race to "The Stack" in a car the system can't hack: The Beast.</p>
+                    </div>
+                    <div class="event" id="ev-3">
+                        <span class="event-status">[ PHASE_REBOOT: PENDING ]</span>
+                        <h3>[ 45 - 60 MIN ]</h3>
+                        <p><strong>The Reboot.</strong> The final sacrifice inside the digital void to save the humanity that abandoned him.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="uplink" class="uplink-section">
+        <div class="container">
+            <div class="uplink-box">
+                <h2 class="char-name" style="font-size: 2rem;">JOIN THE UNDERGROUND</h2>
+                <p style="color: #666; margin-bottom: 30px;">Leave your uplink (email) to receive the next data packet before the Purge completes.</p>
+                <input type="email" placeholder="USER@NEXUS_TERMINAL:~" class="uplink-input">
+                <button class="btn primary-btn" style="width: 100%;">Establish Link</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container" id="about">
+            <div class="author-name">SHREYANSH GUPTA</div>
+            <p style="font-size: 0.9rem; color: #666;">Architect of the Zero Index. Explorer of the Digital Void.</p>
+            <p style="margin-top: 40px; font-size: 0.6rem; color: #222; letter-spacing: 2px;">
+                REBOOT_REQUIRED // ENCRYPTION_ACTIVE // &copy; 2025
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Typing Effect
+        const textElement = document.getElementById('typing-text');
+        const textToType = "The system didn't crash. It's cleaning house. 20 billion people are frozen in the rain. Arjun is the only one awake.";
+        let index = 0;
+
+        function type() {
+            if (index < textToType.length) {
+                textElement.innerHTML += textToType.charAt(index);
+                index++;
+                setTimeout(type, 30);
+            }
+        }
+
+        // Countdown Timer
+        let time = 3600; 
+        const timerElement = document.getElementById('timer');
+
+        function updateTimer() {
+            let minutes = Math.floor(time / 60);
+            let seconds = time % 60;
+            let ms = Math.floor(Math.random() * 99); 
+            
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            let msDisplay = ms < 10 ? '0' + ms : ms;
+
+            timerElement.innerHTML = `${minutes}:${seconds}:${msDisplay}`;
+            if (time > 0) time--;
+        }
+
+        // Scroll Reveal Effect
+        const observerOptions = { threshold: 0.2 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) { 
+                    entry.target.classList.add('show'); 
+                    // Animate line progress when timeline comes into view
+                    if (entry.target.parentElement && entry.target.parentElement.classList.contains('timeline')) {
+                        document.getElementById('active-line').style.width = '100%';
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.event').forEach(event => { observer.observe(event); });
+
+        // Initialize
+        window.onload = () => {
+            type();
+            setInterval(updateTimer, 100);
+        };
+    </script>
+</body>
+</html>
